@@ -1,0 +1,30 @@
+version: '3.2'
+
+services:
+   db:
+      image: mariadb:latest
+      command: --lower_case_table_names=1
+      container_name: mysql-server
+      restart: always
+      ports:
+       - '3306:3306'
+      environment:
+        # MYSQL_ROOT_PASSWORD: mypass
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      volumes:
+       - mysql_data_container:/var/lib/mysql
+   app:
+      depends_on:
+       - db
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      restart: always
+      ports:
+       - '8081:80'
+      environment:
+        PMA_HOST: db
+        UPLOAD_LIMIT: 2000M
+        MAX_EXECUTION_TIME: 3600
+
+volumes:
+  mysql_data_container:        
