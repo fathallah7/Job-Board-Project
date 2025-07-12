@@ -13,23 +13,23 @@
             {{ __('Dashboard') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('company.index')" :active="request()->routeIs('company.index')">
+        <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
             {{ __('Companies') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('application.index')" :active="request()->routeIs('application.index')">
+            <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-application.index')">
             {{ __('Applications') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+        <x-nav-link :href="route('job-categories.index')" :active="request()->routeIs('job-categories.index')">
             {{ __('Categories') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('vacancy.index')" :active="request()->routeIs('vacancy.index')">
+        <x-nav-link :href="route('job-vacancies.index')" :active="request()->routeIs('job-vacancies.index')">
             {{ __('Job Vacancies') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
             {{ __('Users') }}
         </x-nav-link>
         <hr />
