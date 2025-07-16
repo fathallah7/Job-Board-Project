@@ -13,15 +13,18 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/' , [DashboardController::class,'index'])->name('dashboard');
-    
-    Route::resource('/companies' , CompanyController::class);
-    Route::put('/companies/{id}/restore' , [CompanyController::class,'restore'])->name('companies.restore');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/job-applications' , JobApplicationController::class);
-    Route::resource('/job-categories' , JobCategoryController::class);
-    Route::resource('/job-vacancies' , JobVacancyController::class);
-    Route::resource('/users' , UserController::class);
+    Route::resource('/companies', CompanyController::class);
+    Route::put('/companies/{id}/restore', [CompanyController::class, 'restore'])->name('companies.restore');
+
+    Route::resource('/job-applications', JobApplicationController::class);
+
+    Route::resource('/job-categories', JobCategoryController::class);
+    Route::put('/job-categories/{id}/restore', [JobCategoryController::class, 'restore'])->name('categories.restore');
+
+    Route::resource('/job-vacancies', JobVacancyController::class);
+    Route::resource('/users', UserController::class);
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,4 +32,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

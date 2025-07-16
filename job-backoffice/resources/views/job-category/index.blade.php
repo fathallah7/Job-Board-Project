@@ -20,15 +20,15 @@
 
             <div class="flex flex-row space-x-4">
                 @if (request()->archive)
-                <a href="{{route('job-categories.index')}}"
-                    class="bg-green-500 text-white px-4 py-2 my-3 rounded-md hover:bg-green-800 transition duration-300">
-                    Active
-                </a>
+                    <a href="{{route('job-categories.index')}}"
+                        class="bg-green-500 text-white px-4 py-2 my-3 rounded-md hover:bg-green-800 transition duration-300">
+                        Active
+                    </a>
                 @else
-                <a href="{{route('job-categories.index' , ['archive' => true])}}"
-                    class="bg-red-500 text-white px-4 py-2 my-3 rounded-md hover:bg-red-800 transition duration-300">
-                    Archive
-                </a>
+                    <a href="{{route('job-categories.index', ['archive' => true])}}"
+                        class="bg-red-500 text-white px-4 py-2 my-3 rounded-md hover:bg-red-800 transition duration-300">
+                        Archive
+                    </a>
                 @endif
 
                 <a href="{{route('job-categories.create')}}"
@@ -51,28 +51,38 @@
                 </thead>
                 <tbody class="text-gray-600 text-sm">
                     @forelse ($categories as $category)
-                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                        <td class="py-3 px-6 text-left">{{ $category->name }}</td>
-                        <td class="py-3 px-6 text-center">
-                            <div class="flex item-center justify-center space-x-2">
-                                <a href="{{ route('job-categories.edit', $category->id) }}"
-                                    class="text-blue-500 hover:scale-110">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <form action="{{ route('job-categories.destroy', $category->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:scale-110">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6 text-left">{{ $category->name }}</td>
+                            <td class="py-3 px-6 text-center">
+                                <div class="flex item-center justify-center space-x-2">
+                                    @if (request()->archive)
+                                        <form action="{{route('categories.restore', $category->id)}}" method="POST"
+                                            class="inline-block">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="text-green-500 hover:text-green-700">🔄
+                                                Restore</button>
+                                        </form>
+                                    @else
+                                        <a href="{{ route('job-categories.edit', $category->id) }}"
+                                            class="text-blue-500 hover:scale-110">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
+                                        <form action="{{ route('job-categories.destroy', $category->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:scale-110">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="2" class="py-3 px-6 text-center">No data found</td>
-                    </tr>
+                        <tr>
+                            <td colspan="2" class="py-3 px-6 text-center">No data found</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

@@ -76,6 +76,13 @@ class JobCategoryController extends Controller
     public function destroy(string $id)
     {
         JobCategory::findOrFail($id)->delete();
-        return redirect()->route("job-categories.index")->with("success","Category Archived");
+        return redirect()->route("job-categories.index")->with("success", "An Category Archived");
+    }
+
+    public function restore(string $id)
+    {
+        $category = JobCategory::onlyTrashed()->find($id);
+        $category->restore($id);
+        return redirect()->route("job-categories.index", ['archive' => 'true'])->with("success", "An Category restored successfully!");
     }
 }
