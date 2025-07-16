@@ -45,4 +45,8 @@ class Company extends Model
     {
         return $this->hasMany(JobVacancy::class, 'company_id', 'id');
     }
+
+    public function JobApplication() {
+        return $this->hasManyThrough (JobApplication::class , JobVacancy::class ,'company_id', 'job_vacancy_id' , 'id' , 'id');
+    }
 }

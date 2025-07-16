@@ -17,7 +17,7 @@
             {{ __('Companies') }}
         </x-nav-link>
 
-            <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-application.index')">
+            <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications.index')">
             {{ __('Applications') }}
         </x-nav-link>
 
