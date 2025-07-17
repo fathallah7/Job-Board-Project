@@ -26,8 +26,8 @@
         <div class="flex-1 min-h-screen bg-gray-100">
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
-                    <div class="py-4 px-4 w-full">
+                <header class="bg-white border-b border-gray-300">
+                    <div class="py-6 px-4 w-full">
                         {{ $header }}
                     </div>
                 </header>

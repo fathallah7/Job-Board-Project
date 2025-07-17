@@ -12,97 +12,114 @@
         <h1 class="text-3xl text-gray-800 font-bold text-center mb-8 mt-6">Job Companies</h1>
 
         <!-- Search and Add User (Static) -->
-        <div class="flex flex-col-reverse md:flex-row justify-between items-center mb-3 mt-5">
-            <div class="w-full md:w-1/2 md:mb-0">
-                <input type="text" placeholder="Search users..."
-                    class="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-5 mt-8 space-y-4 md:space-y-0">
+
+            <!-- Search Input -->
+            <div class="w-full md:w-1/2">
+                <input type="text" placeholder="Search companies..."
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white focus:ring-2 focus:ring-blue-200 focus:outline-none transition">
             </div>
 
-            <div class="flex flex-row space-x-4">
+            <!-- Action Buttons -->
+            <div class="flex flex-row flex-wrap justify-end space-x-3">
+
                 @if (request()->archive)
-                    <a href="{{route('companies.index')}}"
-                        class="bg-green-500 text-white px-4 py-2 my-3 rounded-md hover:bg-green-800 transition duration-300">
+                    <a href="{{ route('companies.index') }}"
+                        class="inline-block px-5 py-2 border border-green-600 text-green-600 rounded-md font-medium hover:bg-green-50 transition">
                         Active
                     </a>
                 @else
-                    <a href="{{route('companies.index', ['archive' => true])}}"
-                        class="bg-red-500 text-white px-4 py-2 my-3 rounded-md hover:bg-red-800 transition duration-300">
+                    <a href="{{ route('companies.index', ['archive' => true]) }}"
+                        class="inline-block px-5 py-2 border border-red-600 text-red-600 rounded-md font-medium hover:bg-red-50 transition">
                         Archive
                     </a>
                 @endif
 
-                <a href="{{route('companies.create')}}"
-                    class="bg-blue-500 text-white px-4 py-2 my-3 rounded-md hover:bg-blue-600 transition duration-300">
-                    Add company
+                <a href="{{ route('companies.create') }}"
+                    class="inline-block px-5 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition">
+                    + Add Company
                 </a>
+
             </div>
 
         </div>
 
 
+
         <!-- User Table -->
-        <div class="overflow-x-auto bg-white rounded-lg shadow">
-            <table class="w-full table-auto">
-                <thead>
-                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left">Name</th>
-                        <th class="py-3 px-6 text-left">Address</th>
-                        <th class="py-3 px-6 text-left">Industry</th>
-                        <th class="py-3 px-6 text-left">Website</th>
-                        <th class="py-3 px-6 text-center">Actions</th>
+        <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
+            <table class="w-full table-fixed text-sm text-gray-700">
+                <thead class="bg-gray-100 border-b border-gray-300">
+                    <tr class="uppercase text-xs tracking-wider text-gray-600">
+                        <th class="py-3 px-4 text-left">Name</th>
+                        <th class="py-3 px-4 text-left">Address</th>
+                        <th class="py-3 px-4 text-left">Industry</th>
+                        <th class="py-3 px-4 text-left">Website</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-600 text-sm">
+                <tbody>
                     @forelse ($companies as $company)
-                        <tr class="border-b border-gray-200 hover:bg-gray-100">
-                            <td class="py-3 px-6 text-left">
+                        <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration">
+                            <td class="py-3 px-4 font-medium">
                                 @if (request()->archive)
-                                    <span class="text-gray-700 font-bold">{{ $company->name }} </span>
-                                    @else
-                                    <a class="text-blue-700 font-bold"
-                                        href="{{route('companies.show', $company->id)}}">{{ $company->name }} </a>
-                                    @endif
+                                    <span>{{ $company->name }}</span>
+                                @else
+                                    <a href="{{ route('companies.show', $company->id) }}" class="text-blue-700 hover:underline">
+                                        {{ $company->name }}
+                                    </a>
+                                @endif
                             </td>
-                            <td class="py-3 px-6 text-left">{{ $company->address }}</td>
-                            <td class="py-3 px-6 text-left">{{ $company->industry }}</td>
-                            <td class="py-3 px-6 text-left">{{ $company->website }}</td>
-                            <td class="py-3 px-6 text-center">
-                                <div class="flex item-center justify-center space-x-2">
+                            <td class="py-3 px-4">{{ $company->address }}</td>
+                            <td class="py-3 px-4">{{ $company->industry }}</td>
+                            <td class="py-3 px-4">
+                                <a href="{{ $company->website }}" target="_blank" class="text-blue-600 hover:underline">
+                                    {{ $company->website }}
+                                </a>
+                            </td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex justify-center space-x-2">
+
                                     @if(request()->archive)
-                                        <!-- Restore Button -->
-                                        <form action="{{route('companies.restore', $company->id)}}" method="POST"
-                                            class="inline-block">
+                                        <form action="{{ route('companies.restore', $company->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="text-green-500 hover:text-green-700">🔄
-                                                Restore</button>
+                                            <button type="submit"
+                                                class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
+                                                Restore
+                                            </button>
                                         </form>
                                     @else
-                                        <!-- Edit Button -->
                                         <a href="{{ route('companies.edit', $company->id) }}"
-                                            class="text-blue-500 hover:scale-110">
-                                            <i class="fa-solid fa-pen"></i>
+                                            class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
+                                            Edit
                                         </a>
-                                        <!-- Destroy Button -->
-                                        <form action="{{ route('companies.destroy', $company->id) }}" method="POST">
+
+                                        <form action="{{ route('companies.destroy', $company->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:scale-110">
-                                                <i class="fa-solid fa-trash"></i>
+                                            <button type="submit"
+                                                class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
+                                                Delete
                                             </button>
                                         </form>
                                     @endif
+
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="2" class="py-3 px-6 text-center">No data found</td>
+                            <td colspan="5" class="py-3 px-4 text-center text-gray-500">
+                                No companies found.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
     </div>
 
 </x-app-layout>

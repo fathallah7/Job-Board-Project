@@ -2,8 +2,8 @@
 
 @php
     $classes = ($active ?? false)
-        ? 'flex items-center px-4 py-2 w-full text-sm font-medium text-gray-900 bg-indigo-100 rounded-md focus:outline-none hover:bg-gray-100 focus:bg-gray-200 transition duration-150 ease-in-out'
-        : 'flex items-center px-4 py-2 w-full text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out';
+        ? 'mb-4 flex items-center px-4 py-2 w-full text-md font-medium text-indigo-700 bg-indigo-50 rounded-lg transition hover:bg-indigo-100'
+        : 'mb-4 flex items-center px-4 py-2 w-full text-md font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition';
 @endphp
 
 <li>
