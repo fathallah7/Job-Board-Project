@@ -8,6 +8,7 @@ use App\Http\Controllers\JobVacancyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Models\Company;
+use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/job-categories/{id}/restore', [JobCategoryController::class, 'restore'])->name('categories.restore');
 
     Route::resource('/job-vacancies', JobVacancyController::class);
+    Route::put('/job-vacancies/{id}/restore' , [JobVacancyController::class , 'restore'])->name('vacancies.restore');
 
     Route::resource('/users', UserController::class);
     Route::put('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
