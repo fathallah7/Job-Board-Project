@@ -12,7 +12,7 @@ use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(["auth","role:admin,company_owner"])->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
