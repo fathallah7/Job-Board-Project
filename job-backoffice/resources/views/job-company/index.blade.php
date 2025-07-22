@@ -45,80 +45,138 @@
         </div>
 
 
+<div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
+    <table class="w-full table-fixed text-sm text-gray-700 hidden md:table">
+        <thead class="bg-gray-100 border-b border-gray-300">
+            <tr class="uppercase text-xs tracking-wider text-gray-600">
+                <th class="py-3 px-4 text-left">Name</th>
+                <th class="py-3 px-4 text-left">Address</th>
+                <th class="py-3 px-4 text-left">Industry</th>
+                <th class="py-3 px-4 text-left">Website</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($companies as $company)
+                <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration">
+                    <td class="py-3 px-4 font-medium">
+                        @if (request()->archive)
+                            <span>{{ $company->name }}</span>
+                        @else
+                            <a href="{{ route('companies.show', $company->id) }}" class="text-blue-700 hover:underline">
+                                {{ $company->name }}
+                            </a>
+                        @endif
+                    </td>
+                    <td class="py-3 px-4">{{ $company->address }}</td>
+                    <td class="py-3 px-4">{{ $company->industry }}</td>
+                    <td class="py-3 px-4">
+                        <a href="{{ $company->website }}" target="_blank" class="text-blue-600 hover:underline">
+                            {{ $company->website }}
+                        </a>
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <div class="flex justify-center space-x-2">
 
-        <!-- User Table -->
-        <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
-            <table class="w-full table-fixed text-sm text-gray-700">
-                <thead class="bg-gray-100 border-b border-gray-300">
-                    <tr class="uppercase text-xs tracking-wider text-gray-600">
-                        <th class="py-3 px-4 text-left">Name</th>
-                        <th class="py-3 px-4 text-left">Address</th>
-                        <th class="py-3 px-4 text-left">Industry</th>
-                        <th class="py-3 px-4 text-left">Website</th>
-                        <th class="py-3 px-4 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($companies as $company)
-                        <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration">
-                            <td class="py-3 px-4 font-medium">
-                                @if (request()->archive)
-                                    <span>{{ $company->name }}</span>
-                                @else
-                                    <a href="{{ route('companies.show', $company->id) }}" class="text-blue-700 hover:underline">
-                                        {{ $company->name }}
-                                    </a>
-                                @endif
-                            </td>
-                            <td class="py-3 px-4">{{ $company->address }}</td>
-                            <td class="py-3 px-4">{{ $company->industry }}</td>
-                            <td class="py-3 px-4">
-                                <a href="{{ $company->website }}" target="_blank" class="text-blue-600 hover:underline">
-                                    {{ $company->website }}
+                            @if(request()->archive)
+                                <form action="{{ route('companies.restore', $company->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit"
+                                        class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
+                                        Restore
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('companies.edit', $company->id) }}"
+                                    class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
+                                    Edit
                                 </a>
-                            </td>
-                            <td class="py-3 px-4 text-center">
-                                <div class="flex justify-center space-x-2">
 
-                                    @if(request()->archive)
-                                        <form action="{{ route('companies.restore', $company->id) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit"
-                                                class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
-                                                Restore
-                                            </button>
-                                        </form>
-                                    @else
-                                        <a href="{{ route('companies.edit', $company->id) }}"
-                                            class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
-                                            Edit
-                                        </a>
+                                <form action="{{ route('companies.destroy', $company->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
+                                        Delete
+                                    </button>
+                                </form>
+                            @endif
 
-                                        <form action="{{ route('companies.destroy', $company->id) }}" method="POST"
-                                            onsubmit="return confirm('Are you sure?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    @endif
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="py-3 px-4 text-center text-gray-500">
+                        No companies found.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="py-3 px-4 text-center text-gray-500">
-                                No companies found.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <!-- Mobile View -->
+    <div class="md:hidden space-y-4 p-4">
+        @forelse ($companies as $company)
+            <div class="border rounded-lg p-4 shadow-sm bg-gray-50">
+                <div class="mb-2">
+                    <strong>Name:</strong>
+                    @if (request()->archive)
+                        <span>{{ $company->name }}</span>
+                    @else
+                        <a href="{{ route('companies.show', $company->id) }}" class="text-blue-700 hover:underline">
+                            {{ $company->name }}
+                        </a>
+                    @endif
+                </div>
+                <div class="mb-2">
+                    <strong>Address:</strong> {{ $company->address }}
+                </div>
+                <div class="mb-2">
+                    <strong>Industry:</strong> {{ $company->industry }}
+                </div>
+                <div class="mb-2">
+                    <strong>Website:</strong>
+                    <a href="{{ $company->website }}" target="_blank" class="text-blue-600 hover:underline">
+                        {{ $company->website }}
+                    </a>
+                </div>
+                <div class="flex justify-start space-x-2 mt-3">
+                    @if(request()->archive)
+                        <form action="{{ route('companies.restore', $company->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit"
+                                class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
+                                Restore
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('companies.edit', $company->id) }}"
+                            class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
+                            Edit
+                        </a>
+
+                        <form action="{{ route('companies.destroy', $company->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
+                                Delete
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        @empty
+            <div class="text-center text-gray-500">No companies found.</div>
+        @endforelse
+    </div>
+</div>
+
 
     </div>
 

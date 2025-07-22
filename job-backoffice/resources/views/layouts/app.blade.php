@@ -26,14 +26,14 @@
         <div class="flex-1 min-h-screen bg-gray-100">
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white border-b border-gray-300">
+                <header class="bg-white border-b border-gray-300 hidden md:hidden lg:block">
                     <div class="py-6 px-4 w-full">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
             <!-- Page Content -->
-            <main>
+            <main class="mt-20 md:mt-20 lg:mt-0">
                 {{ $slot }}
             </main>
         </div>
