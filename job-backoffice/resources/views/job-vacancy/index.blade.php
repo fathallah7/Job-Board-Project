@@ -46,36 +46,107 @@
 
 
 
-<div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
-    <table class="w-full table-fixed text-sm text-gray-700 hidden md:table">
-        <thead class="bg-gray-100 border-b border-gray-300">
-            <tr class="uppercase text-xs tracking-wider text-gray-600">
-                <th class="py-3 px-4 text-left">Title</th>
-                <th class="py-3 px-4 text-left">Company</th>
-                <th class="py-3 px-4 text-left">Location</th>
-                <th class="py-3 px-4 text-left">Type</th>
-                <th class="py-3 px-4 text-left">Salary</th>
-                <th class="py-3 px-4 text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($vacancies as $vacancy)
-                <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration">
-                    <td class="py-3 px-4 font-medium">
-                        @if (request()->archive)
-                            <span>{{ $vacancy->title }}</span>
-                        @else
-                            <a href="{{ route('job-vacancies.show', $vacancy->id) }}" class="text-blue-700 hover:underline">
-                                {{ $vacancy->title }}
-                            </a>
+        <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-200">
+            <table class="w-full table-fixed text-sm text-gray-700 hidden md:table">
+                <thead class="bg-gray-100 border-b border-gray-300">
+                    <tr class="uppercase text-xs tracking-wider text-gray-600">
+                        <th class="py-3 px-4 text-left">Title</th>
+                        @if (auth()->user()->role == 'admin')
+                            <th class="py-3 px-4 text-left">Company</th>
                         @endif
-                    </td>
-                    <td class="py-3 px-4">{{ $vacancy->company->name }}</td>
-                    <td class="py-3 px-4">{{ $vacancy->location }}</td>
-                    <td class="py-3 px-4">{{ $vacancy->type }}</td>
-                    <td class="py-3 px-4">{{ $vacancy->salary }}</td>
-                    <td class="py-3 px-4 text-center">
-                        <div class="flex justify-center space-x-2">
+                        <th class="py-3 px-4 text-left">Location</th>
+                        <th class="py-3 px-4 text-left">Type</th>
+                        <th class="py-3 px-4 text-left">Salary</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($vacancies as $vacancy)
+                        <tr class="border-b border-gray-200 hover:bg-gray-100 transition duration">
+                            <td class="py-3 px-4 font-medium">
+                                @if (request()->archive)
+                                    <span>{{ $vacancy->title }}</span>
+                                @else
+                                    <a href="{{ route('job-vacancies.show', $vacancy->id) }}"
+                                        class="text-blue-700 hover:underline">
+                                        {{ $vacancy->title }}
+                                    </a>
+                                @endif
+                            </td>
+                            @if (auth()->user()->role == 'admin')
+                                <td class="py-3 px-4">{{ $vacancy->company->name }}</td>
+                            @endif
+                            <td class="py-3 px-4">{{ $vacancy->location }}</td>
+                            <td class="py-3 px-4">{{ $vacancy->type }}</td>
+                            <td class="py-3 px-4">{{ $vacancy->salary }}</td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex justify-center space-x-2">
+                                    @if(request()->archive)
+                                        <form action="{{ route('vacancies.restore', $vacancy->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit"
+                                                class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
+                                                Restore
+                                            </button>
+                                        </form>
+                                    @else
+                                        <a href="{{ route('job-vacancies.edit', $vacancy->id) }}"
+                                            class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('job-vacancies.destroy', $vacancy->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-3 px-4 text-center text-gray-500">
+                                No vacancies found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <!-- Mobile View -->
+            <div class="md:hidden space-y-4 p-4">
+                @forelse ($vacancies as $vacancy)
+                    <div class="border rounded-lg p-4 shadow-sm bg-gray-50">
+                        <div class="mb-2">
+                            <strong>Title:</strong>
+                            @if (request()->archive)
+                                <span>{{ $vacancy->title }}</span>
+                            @else
+                                <a href="{{ route('job-vacancies.show', $vacancy->id) }}" class="text-blue-700 hover:underline">
+                                    {{ $vacancy->title }}
+                                </a>
+                            @endif
+                        </div>
+                        @if (auth()->user()->role == 'admin')
+                            <div class="mb-2">
+                                <strong>Company:</strong> {{ $vacancy->company->name }}
+                            </div>
+                        @endif
+                        <div class="mb-2">
+                            <strong>Location:</strong> {{ $vacancy->location }}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Type:</strong> {{ $vacancy->type }}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Salary:</strong> {{ $vacancy->salary }}
+                        </div>
+                        <div class="flex justify-start space-x-2 mt-3">
                             @if(request()->archive)
                                 <form action="{{ route('vacancies.restore', $vacancy->id) }}" method="POST">
                                     @csrf
@@ -101,76 +172,12 @@
                                 </form>
                             @endif
                         </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="py-3 px-4 text-center text-gray-500">
-                        No vacancies found.
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-    <!-- Mobile View -->
-    <div class="md:hidden space-y-4 p-4">
-        @forelse ($vacancies as $vacancy)
-            <div class="border rounded-lg p-4 shadow-sm bg-gray-50">
-                <div class="mb-2">
-                    <strong>Title:</strong>
-                    @if (request()->archive)
-                        <span>{{ $vacancy->title }}</span>
-                    @else
-                        <a href="{{ route('job-vacancies.show', $vacancy->id) }}" class="text-blue-700 hover:underline">
-                            {{ $vacancy->title }}
-                        </a>
-                    @endif
-                </div>
-                <div class="mb-2">
-                    <strong>Company:</strong> {{ $vacancy->company->name }}
-                </div>
-                <div class="mb-2">
-                    <strong>Location:</strong> {{ $vacancy->location }}
-                </div>
-                <div class="mb-2">
-                    <strong>Type:</strong> {{ $vacancy->type }}
-                </div>
-                <div class="mb-2">
-                    <strong>Salary:</strong> {{ $vacancy->salary }}
-                </div>
-                <div class="flex justify-start space-x-2 mt-3">
-                    @if(request()->archive)
-                        <form action="{{ route('vacancies.restore', $vacancy->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit"
-                                class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50 transition text-xs">
-                                Restore
-                            </button>
-                        </form>
-                    @else
-                        <a href="{{ route('job-vacancies.edit', $vacancy->id) }}"
-                            class="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-xs">
-                            Edit
-                        </a>
-                        <form action="{{ route('job-vacancies.destroy', $vacancy->id) }}" method="POST"
-                            onsubmit="return confirm('Are you sure?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 transition text-xs">
-                                Delete
-                            </button>
-                        </form>
-                    @endif
-                </div>
+                    </div>
+                @empty
+                    <div class="text-center text-gray-500">No vacancies found.</div>
+                @endforelse
             </div>
-        @empty
-            <div class="text-center text-gray-500">No vacancies found.</div>
-        @endforelse
-    </div>
-</div>
+        </div>
 
 
     </div>

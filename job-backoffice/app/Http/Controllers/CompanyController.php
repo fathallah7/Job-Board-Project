@@ -15,6 +15,18 @@ class CompanyController extends Controller
 
     public $industries = ['Technology', 'Finance', 'Healthcare', 'Education', 'Manufacturing', 'Retail', 'Other'];
 
+
+    public function getCompany(string $id = null)
+    {
+
+        if ($id) {
+            return Company::findOrFail($id);
+        }
+
+        return Company::where('owner_id', auth()->user()->id)->first();
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -75,18 +87,18 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id = null)
     {
-        $company = Company::find($id);
+        $company = $this->getCompany($id);
         return view("job-company.show", compact('company'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id = null)
     {
-        $company = Company::findOrFail($id);
+        $company = $this->getCompany($id);
         $industries = $this->industries;
         return view('job-company.editform', compact('company', 'industries'));
     }
@@ -94,15 +106,16 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CompanyUpdateRequest $request, string $id)
+    public function update(CompanyUpdateRequest $request, string $id = null)
     {
         $validated = $request->validated();
-        Company::findOrFail($id)->update([
-            'name' => $validated['name'],
-            'address' => $validated['address'],
-            'industry' => $validated['industry'],
-            'website' => $validated['website'],
-        ]);
+
+            $this->getCompany($id)->update([
+                'name' => $validated['name'],
+                'address' => $validated['address'],
+                'industry' => $validated['industry'],
+                'website' => $validated['website'],
+            ]);
 
         // Update owner
         $ownerData = [];
@@ -112,11 +125,14 @@ class CompanyController extends Controller
             $ownerData['password'] = Hash::make($validated['owner_password']);
         }
 
-        $company = Company::findOrFail($id);
+        $company = $this->getCompany($id);
         $company->owner()->update($ownerData);
-        
 
-        return redirect()->route('companies.show' , $id)->with('success', "An company Updated");
+        if(auth()->user()->role == 'company_owner'){
+            return redirect()->route('my-company.show')->with('success', "An company Updated");
+        }
+
+        return redirect()->route('companies.show', $id)->with('success', "An company Updated");
     }
 
     /**

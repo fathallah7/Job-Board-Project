@@ -20,7 +20,8 @@
                     <i class="fa-solid fa-building mr-2"></i>
                     {{ __('Companies') }}
                 </x-nav-link>
-                <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications.index')">
+                <x-nav-link :href="route('job-applications.index')"
+                    :active="request()->routeIs('job-applications.index')">
                     <i class="fa-solid fa-file-lines mr-2"></i>
                     {{ __('Applications') }}
                 </x-nav-link>
@@ -57,7 +58,11 @@
     <div class="flex items-center px-6 border-b border-gray-300 py-5">
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
             <x-application-logo class="h-8 w-auto fill-current text-indigo-600" />
-            <span class="text-xl font-bold text-gray-800">Back Office</span>
+            @if (auth()->user()->role == 'admin')
+                <span class="text-xl font-bold text-gray-800">Back Office</span>
+            @else
+                <span class="text-xl font-bold text-gray-800">Back Office (Owner)</span>
+            @endif
         </a>
     </div>
     <!-- Navigation Links -->
@@ -66,9 +71,15 @@
             <i class="fa-solid fa-chart-line mr-2"></i> {{ __('Dashboard') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
-            <i class="fa-solid fa-building mr-2"></i> {{ __('Companies') }}
-        </x-nav-link>
+        @if (auth()->user()->role == 'admin')
+            <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.index')">
+                <i class="fa-solid fa-building mr-2"></i> {{ __('Companies') }}
+            </x-nav-link>
+        @else
+            <x-nav-link :href="route('my-company.show')" :active="request()->routeIs('companies.index')">
+                <i class="fa-solid fa-building mr-2"></i> {{ __('My Company') }}
+            </x-nav-link>
+        @endif
 
         <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications.index')">
             <i class="fa-solid fa-file-lines mr-2"></i> {{ __('Applications') }}
@@ -78,13 +89,17 @@
             <i class="fa-solid fa-briefcase mr-2"></i> {{ __('Job Vacancies') }}
         </x-nav-link>
 
-        <x-nav-link :href="route('job-categories.index')" :active="request()->routeIs('job-categories.index')">
-            <i class="fa-solid fa-layer-group mr-2"></i> {{ __('Categories') }}
-        </x-nav-link>
+        @if (auth()->user()->role == 'admin')
+            <x-nav-link :href="route('job-categories.index')" :active="request()->routeIs('job-categories.index')">
+                <i class="fa-solid fa-layer-group mr-2"></i> {{ __('Categories') }}
+            </x-nav-link>
+        @endif
 
-        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-            <i class="fa-solid fa-users mr-2"></i> {{ __('Users') }}
-        </x-nav-link>
+        @if (auth()->user()->role == 'admin')
+            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                <i class="fa-solid fa-users mr-2"></i> {{ __('Users') }}
+            </x-nav-link>
+        @endif
 
         <hr class="my-4 border-gray-300">
 

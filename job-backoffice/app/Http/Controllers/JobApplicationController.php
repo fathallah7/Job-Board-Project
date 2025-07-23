@@ -15,6 +15,12 @@ class JobApplicationController extends Controller
     {
         $query = JobApplication::latest();
 
+        if (auth()->user()->role == 'company_owner') {
+            $query->whereHas('jobVacancy', function ($q) {
+                $q->where('company_id', auth()->user()->company?->id);
+            });
+        }
+
         if (request()->archive) {
             $query->onlyTrashed();
         }
@@ -49,8 +55,8 @@ class JobApplicationController extends Controller
     {
         $jobApplication = JobApplication::findOrFail($id);
         $jobApplication->update([
-                "status" => $request->input("status"),
-            ]);
+            "status" => $request->input("status"),
+        ]);
         return redirect()->route("job-applications.show", $jobApplication->id)->with("success", "An Application Updated successfully");
     }
 
