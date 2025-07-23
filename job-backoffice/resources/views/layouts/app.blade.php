@@ -21,21 +21,25 @@
 <body class="font-sans antialiased">
     <div class="flex">
 
-        @include('layouts.navigation')
+        {{-- Side bar || navigation  --}}
+        <x-navigation />
 
         <div class="flex-1 min-h-screen bg-gray-100">
+
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white border-b border-gray-300 hidden md:hidden lg:block">
+                <header class="bg-white border-b border-gray-300 hidden md:hidden lg:block lg:ml-64">
                     <div class="py-6 px-4 w-full">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
+
             <!-- Page Content -->
-            <main class="mt-20 md:mt-20 lg:mt-0">
+            <main class="mt-20 md:mt-20 lg:mt-0 lg:ml-64">
                 {{ $slot }}
             </main>
+
         </div>
 
     </div>
