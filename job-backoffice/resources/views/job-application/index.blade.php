@@ -35,11 +35,6 @@
                     </a>
                 @endif
 
-                <a href="{{ route('job-applications.create') }}"
-                    class="inline-block px-5 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition">
-                    + Add application
-                </a>
-
             </div>
 
         </div>
