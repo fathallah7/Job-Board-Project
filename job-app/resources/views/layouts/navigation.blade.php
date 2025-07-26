@@ -16,9 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications')" class="text-white">
+                    {{-- <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications')" class="text-white">
                         {{ __('My Applications') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
                 </div>
             </div>
 
