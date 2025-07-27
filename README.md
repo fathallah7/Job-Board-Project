@@ -16,6 +16,12 @@ This is a job board platform built with Laravel. It consists of two main applica
 - Admin dashboard for managing companies, jobs, categories, and users
 - Archive and restore companies and job applications
 
+## Tech Stack
+
+- Laravel (PHP)
+- Tailwind CSS
+- Alpine.js
+
 ## Getting Started
 
 1. Clone the repository.
@@ -35,8 +41,3 @@ This is a job board platform built with Laravel. It consists of two main applica
    npm run dev
    ```
 
-## Tech Stack
-
-- Laravel (PHP)
-- Tailwind CSS
-- Alpine.js
