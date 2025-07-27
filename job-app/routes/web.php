@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\JobVacancyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+Route::get('/job-vacancies-info/{id}' , [JobVacancyController::class , 'show'])->name('job-vacancies-show');
 
 
 Route::middleware('auth')->group(function () {

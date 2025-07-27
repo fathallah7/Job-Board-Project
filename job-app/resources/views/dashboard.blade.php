@@ -57,10 +57,10 @@
                     <div
                         class="p-6 bg-gray-700 border border-gray-600 rounded-xl shadow hover:shadow-md transition flex justify-between items-center">
                         <div>
-                            <h4 class="text-lg font-semibold text-indigo-200">{{$job->title}}</h4>
-                            <p class="text-sm text-gray-400">{{'@' . $job->company->name }}</p>
-                            <p class="text-sm text-gray-400">{{$job->location}}</p>
-                            <p class="text-sm text-gray-400">$ {{ number_format($job->salary) }} / Year</p>
+                            <a href="{{ route('job-vacancies-show' , $job->id) }}" class="text-lg font-semibold text-blue-400 hover:text-blue-300 hover:underline">{{$job->title}}</a>
+                            <p class="text-sm text-gray-300">{{'@' . $job->company->name }}</p>
+                            <p class="text-sm text-gray-300">{{$job->location}}</p>
+                            <p class="text-sm text-gray-300">$ {{ number_format($job->salary) }} / Year</p>
                         </div>
                         <span class="bg-indigo-500 text-white text-sm px-4 py-1.5 rounded-full">{{$job->type}}</span>
                     </div>
