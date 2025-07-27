@@ -40,7 +40,3 @@ This is a job board platform built with Laravel. It consists of two main applica
 - Laravel (PHP)
 - Tailwind CSS
 - Alpine.js
-
-## License
-
-This project is open-sourced under the [MIT license](https://opensource.org/licenses/MIT)
