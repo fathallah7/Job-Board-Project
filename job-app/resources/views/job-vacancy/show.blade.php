@@ -57,7 +57,7 @@
 
 
             <div class="flex justify-center mt-5">
-                <a href=""
+                <a href="{{ route('job-vacancies-apply' , $job->id) }}"
                     class="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold text-sm px-6 py-2 rounded-full shadow-md hover:shadow-lg transition duration-300">
                     Apply Now
                 </a>
