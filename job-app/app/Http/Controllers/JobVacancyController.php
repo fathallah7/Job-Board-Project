@@ -14,12 +14,19 @@ class JobVacancyController extends Controller
     public function show($id)
     {
         $job = JobVacancy::findOrFail($id);
-        return view('job-vacancy.show', compact('job'));
+        $hasApplied = JobApplication::where('job_vacancy_id' , $id)->where('user_id' , auth()->user()->id)->exists();
+        return view('job-vacancy.show', compact('job' , 'hasApplied'));
     }
 
     public function apply(string $id)
     {
         $job = JobVacancy::findOrFail($id);
+
+        $hasApplied = JobApplication::where('job_vacancy_id' , $id)->where('user_id' , auth()->user()->id)->exists();
+        if($hasApplied) {
+            return redirect()->route('job-vacancies-show' , $id);
+        }
+
         return view('job-vacancy.apply', compact('job'));
     }
 
@@ -62,6 +69,6 @@ class JobVacancyController extends Controller
 
         //  in future ai
 
-        return redirect()->back()->with('success', 'Your application has been submitted successfully!');
+        return redirect()->route('job-vacancies-show' , $id)->with('success', 'Your application has been submitted successfully!');
     }
 }
